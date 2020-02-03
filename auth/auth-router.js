@@ -19,4 +19,39 @@ router.post("/login", (req, res) => {
     });
 });
 
+// REGISTRATION ENDPOINT GOES HERE
+router.post("/register", (req, res) => {
+  let user = req.body;
+  const hash = bcrypt.hashSync(user.password, 12);
+  user.password = hash;
+  Users.insert(user)
+    .then(saved => {
+      res.status(201).json(saved);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
+// LOGOUT ENDPOINT
+router.get("logout", (req, res) => {
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.json({
+          message: "Vacating the site is allowed"
+        });
+      } else {
+        res.status(200).json({
+          message: "See you next time!"
+        });
+      }
+    });
+  } else {
+    res.status(200).json({
+      message: "Make sure you login"
+    });
+  }
+});
+
 module.exports = router;
