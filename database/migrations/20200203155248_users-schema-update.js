@@ -2,6 +2,7 @@ exports.up = function(knex) {
   return knex.schema
     .createTable("users", users => {
       users.increments();
+
       users
         .string("username", 128)
         .notNullable()
@@ -12,17 +13,20 @@ exports.up = function(knex) {
       products.increments();
       products.text("name");
       products.text("description");
-      products.text("category");
       products.float("price");
       products.text("location");
+      products.text("category");
       products
         .integer("user_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("users");
+        .inTable("users")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
     });
 };
-exports.down = function(knex) {
-  return knex.schema.dropTableIfExists("users").dropTableIfExists("products");
+
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTableIfExists("products").dropTableIfExists("users");
 };
