@@ -2,12 +2,12 @@ const router = require("express").Router();
 const authenticate = require("../auth/middleware/authenticate-middleware");
 const Products = require("./items-model");
 
-router.get("/", authenticate, (req, res) => {
+router.get("/", (req, res) => {
   Products.getProducts()
     .then(products => {
       res.status(201).json(products);
     })
-    .catch(error => {
+    .catch(err => {
       res.status(500).json(err);
     });
 });
