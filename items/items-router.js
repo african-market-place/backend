@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.post("/addProducts", authenticate, (req, res) => {
+router.post("/addProducts", (req, res) => {
   Products.addProducts(req.body)
     .then(products => {
       res.status(201).json(products);
@@ -22,7 +22,7 @@ router.post("/addProducts", authenticate, (req, res) => {
     });
 });
 
-router.delete("/:id", authenticate, (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   Products.deleteProduct(id)
