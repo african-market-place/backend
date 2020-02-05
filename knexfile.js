@@ -6,6 +6,8 @@ module.exports = {
     connection: {
       filename: "./database/users.db3"
     },
+    
+
     useNullAsDefault: true,
 
     migrations: {

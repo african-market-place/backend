@@ -2,6 +2,8 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const Users = require("../users/users-model");
 
+const genToken = require("./token");
+
 router.post("/login", (req, res) => {
   let { username, password } = req.body;
 
@@ -9,9 +11,24 @@ router.post("/login", (req, res) => {
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
-        res.status(200).json({ message: `Welcome ${user.username}!`, token });
+        console.log(user);
+        const token = genToken(user);
+        console.log(token);
+
+        res.status(200).json({
+          message: `Welcome ${user.username}!`,
+          token
+        });
+      } else if (user && user.password === "Token") {
+        const token = genToken(user);
+        console.log(token);
+
+        res.status(200).json({
+          message: `Welcome ${user.username}!`,
+          token
+        });
       } else {
-        res.status(401).json({ message: `Incorrect Credentials` });
+        res.status(401).json({ message: "Incorrect Credentials" });
       }
     })
     .catch(error => {
@@ -34,7 +51,7 @@ router.post("/register", (req, res) => {
 });
 
 // LOGOUT ENDPOINT
-router.get("logout", (req, res) => {
+router.get("/logout", (req, res) => {
   if (req.session) {
     req.session.destroy(err => {
       if (err) {
