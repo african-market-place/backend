@@ -2,7 +2,7 @@ const router = require("express").Router();
 const authenticate = require("../auth/middleware/authenticate-middleware");
 const Products = require("./items-model");
 
-router.get("/", authenticate, (req, res) => {
+router.get("/", (req, res) => {
   Products.getProducts()
     .then(products => {
       res.status(201).json(products);
@@ -12,7 +12,7 @@ router.get("/", authenticate, (req, res) => {
     });
 });
 
-router.post("/addProducts", authenticate, (req, res) => {
+router.post("/addProducts", (req, res) => {
   Products.addProducts(req.body)
     .then(products => {
       res.status(201).json(products);
