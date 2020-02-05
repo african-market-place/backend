@@ -22,6 +22,11 @@ server.get("/", async (req, res) => {
     res.status(500).json({ error: "Cannot retrieve the shoutouts" });
   }
 });
+
+server.get("/", (req, res) => {
+  res.send("Welcome to Your African-European Marketplace");
+});
+
 server.use("/api/auth", authRouter);
 server.use("/api/users", usersRouter);
 server.use("/api/items", itemsRouter);

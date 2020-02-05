@@ -2,7 +2,7 @@ const router = require("express").Router();
 const authenticate = require("../auth/middleware/authenticate-middleware");
 const Products = require("./items-model");
 
-router.get("/", (req, res) => {
+router.get("/", authenticate, (req, res) => {
   Products.getProducts()
     .then(products => {
       res.status(201).json(products);
@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.post("/addProducts", (req, res) => {
+router.post("/addProducts", authenticate, (req, res) => {
   Products.addProducts(req.body)
     .then(products => {
       res.status(201).json(products);
@@ -22,7 +22,32 @@ router.post("/addProducts", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.put("/:id", authenticate, (req, res) => {
+  const id = req.params.id;
+  const changes = req.body;
+
+  Products.updateProducts(id, changes)
+    .then(updateProducts => {
+      res.status(201).json(updateProducts);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+
+  Items.getProductsById(id)
+    .then(item => {
+      res.status(200).json(item);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.delete("/:id", authenticate, (req, res) => {
   const id = req.params.id;
 
   Products.deleteProduct(id)
