@@ -1,20 +1,19 @@
-module.exports = (req, res, next) => {
-  const { username, password } = req.headers;
+const jwt = require("jsonwebtoken");
 
-  if (username && password) {
-    Users.findBy({ username })
-      .first()
-      .then(user => {
-        if (user && bcrypt.compareSync(password, user.password)) {
-          next();
-        } else {
-          res.status(401).json({ you: "Shall Not Pass" });
-        }
-      })
-      .catch(error => {
-        res.status(500).json({ message: "Unexpected error" });
-      });
+module.exports = (req, res, next) => {
+  const token = req.headers.authorization;
+  const jwtSecret = require("../secret.js").jwtSecret;
+
+  if (token) {
+    jwt.verify(token, jwtSecret, (err, decodedToken) => {
+      if (err) {
+        res.status(401).json({ you: "you shall not pass" });
+      } else {
+        req.jwtToken = decodedToken;
+        next();
+      }
+    });
   } else {
-    res.status(400).json({ message: "No Credentials Provided" });
+    res.status(401).json({ you: "you shall not pass" });
   }
 };

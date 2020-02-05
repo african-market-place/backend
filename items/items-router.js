@@ -7,7 +7,7 @@ router.get("/", authenticate, (req, res) => {
     .then(products => {
       res.status(201).json(products);
     })
-    .catch(error => {
+    .catch(err => {
       res.status(500).json(err);
     });
 });
@@ -16,6 +16,31 @@ router.post("/addProducts", authenticate, (req, res) => {
   Products.addProducts(req.body)
     .then(products => {
       res.status(201).json(products);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.put("/:id", authenticate, (req, res) => {
+  const id = req.params.id;
+  const changes = req.body;
+
+  Products.updateProducts(id, changes)
+    .then(updateProducts => {
+      res.status(201).json(updateProducts);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+router.get("/:id", (req, res) => {
+  const id = req.params.id;
+
+  Items.getProductsById(id)
+    .then(item => {
+      res.status(200).json(item);
     })
     .catch(err => {
       res.status(500).json(err);
