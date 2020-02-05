@@ -2,17 +2,17 @@ const router = require("express").Router();
 const authenticate = require("../auth/middleware/authenticate-middleware");
 const Products = require("./items-model");
 
-router.get("/", authenticate, (req, res) => {
+router.get("/", (req, res) => {
   Products.getProducts()
     .then(products => {
       res.status(201).json(products);
     })
-    .catch(error => {
+    .catch(err => {
       res.status(500).json(err);
     });
 });
 
-router.post("/addProducts", authenticate, (req, res) => {
+router.post("/addProducts", (req, res) => {
   Products.addProducts(req.body)
     .then(products => {
       res.status(201).json(products);
@@ -22,7 +22,7 @@ router.post("/addProducts", authenticate, (req, res) => {
     });
 });
 
-router.delete("/:id", authenticate, (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   Products.deleteProduct(id)
