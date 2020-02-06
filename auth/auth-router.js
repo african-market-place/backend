@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const Users = require("../users/users-model");
-const { check, validationResult } = require("express-validator");
+const { check, validationResult, withMessage } = require("express-validator");
 
 const genToken = require("./token");
 
@@ -48,7 +48,14 @@ router.post(
 // REGISTRATION ENDPOINT GOES HERE
 router.post(
   "/register",
-  [check("username").isEmail(), check("password").isLength({ min: 5 })],
+  [
+    check("username")
+      .isEmail()
+      .withMessage("Username must be valid Email Address"),
+    check("password")
+      .isLength({ min: 5 })
+      .withMessage("Password must be longer than 5 characters")
+  ],
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
