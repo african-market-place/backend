@@ -22,7 +22,7 @@ router.post("/addProducts", (req, res) => {
     });
 });
 
-router.put("/:id", authenticate, (req, res) => {
+router.put("/:id", (req, res) => {
   const id = req.params.id;
   const changes = req.body;
 
@@ -38,16 +38,16 @@ router.put("/:id", authenticate, (req, res) => {
 router.get("/:id", (req, res) => {
   const id = req.params.id;
 
-  Items.getProductsById(id)
-    .then(item => {
-      res.status(200).json(item);
+  Products.getProductsById(id)
+    .then(product => {
+      res.status(200).json(product);
     })
     .catch(err => {
       res.status(500).json(err);
     });
 });
 
-router.delete("/:id", authenticate, (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   Products.deleteProduct(id)
