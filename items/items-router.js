@@ -38,7 +38,7 @@ router.put("/:id", authenticate, (req, res) => {
 router.get("/:id", (req, res) => {
   const id = req.params.id;
 
-  Items.getProductsById(id)
+  Products.getProductsById(id)
     .then(product => {
       res.status(200).json(product);
     })
