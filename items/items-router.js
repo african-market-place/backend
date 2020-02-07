@@ -39,8 +39,8 @@ router.get("/:id", (req, res) => {
   const id = req.params.id;
 
   Items.getProductsById(id)
-    .then(item => {
-      res.status(200).json(item);
+    .then(product => {
+      res.status(200).json(product);
     })
     .catch(err => {
       res.status(500).json(err);
