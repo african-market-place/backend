@@ -22,7 +22,7 @@ router.post("/addProducts", (req, res) => {
     });
 });
 
-router.put("/:id", authenticate, (req, res) => {
+router.put("/:id", (req, res) => {
   const id = req.params.id;
   const changes = req.body;
 
@@ -47,7 +47,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", authenticate, (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
 
   Products.deleteProduct(id)
